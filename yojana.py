@@ -1,4 +1,6 @@
-# 1. The Data: Your mini database (List of Dictionaries)
+import streamlit as st
+
+# 1. The Data
 schemes_db = [
     {"id": 1, "title": "PM Kisan Samman Nidhi", "occupation": "farmer", "description": "Provides ₹6,000 per year to farmer families."},
     {"id": 2, "title": "Post Matric Scholarship", "occupation": "student", "description": "Financial assistance for students pursuing higher education."},
@@ -6,27 +8,23 @@ schemes_db = [
     {"id": 4, "title": "National Agricultural Market", "occupation": "farmer", "description": "Pan-India electronic trading portal."}
 ]
 
-# 2. The Matchmaker: Python filtering function
-def run_filter(user_occupation):
-    print(f"\n--- Searching schemes for: {user_occupation.upper()} ---\n")
-    
-    # List comprehension to filter the database
-    eligible_schemes = [
-        scheme for scheme in schemes_db 
-        if scheme["occupation"] == user_occupation or user_occupation == "all"
-    ]
-    
-    # Display the results
-    if not eligible_schemes:
-        print("No schemes found for this occupation.")
-    else:
-        for scheme in eligible_schemes:
-            print(f"Title: {scheme['title']}")
-            print(f"Details: {scheme['description']}\n")
+# 2. The Interface
+st.title("My Scheme Finder")
+user_occupation = st.selectbox("What is your occupation?", ["all", "farmer", "student", "business"])
 
-# 3. The Interface: Getting user input from the terminal
-print("Welcome to My Scheme Finder!")
-print("Options: farmer, student, business, all")
-user_input = input("What is your occupation? ").strip().lower()
+# 3. The Matchmaker (Filtering)
+st.subheader(f"Schemes for: {user_occupation.upper()}")
 
-run_filter(user_input)
+eligible_schemes = [
+    scheme for scheme in schemes_db 
+    if scheme["occupation"] == user_occupation or user_occupation == "all"
+]
+
+# Display the results
+if not eligible_schemes:
+    st.warning("No schemes found for this occupation.")
+else:
+    for scheme in eligible_schemes:
+        with st.container():
+            st.success(f"**{scheme['title']}**")
+            st.write(scheme['description'])
