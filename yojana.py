@@ -1,95 +1,107 @@
 import streamlit as st
 
-# 1. Page Configuration
-st.set_page_config(page_title="Yojana Setu", page_icon="⚖️", layout="centered")
+# 1. Page Configuration (Set to Wide to mimic a real web app)
+st.set_page_config(page_title="Yojana Setu", page_icon="⚖️", layout="wide")
 
-# 2. Custom CSS Injection
+# 2. Advanced Dark Mode CSS Injection
 st.markdown("""
 <style>
-    /* Hide Streamlit Branding */
+    /* Force Dark Backgrounds and Hide Streamlit UI */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+    .stApp { background-color: #0f172a; } /* Slate 900 */
     
-    /* Professional Styling */
-    .privacy-badge {
-        background-color: #ecfeff;
-        color: #0891b2;
-        padding: 6px 14px;
-        border-radius: 50px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        display: inline-block;
-        margin-bottom: 1rem;
-        border: 1px solid #a5f3fc;
-    }
-    .main-title { font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0; padding-bottom: 0; }
-    .subtitle { font-size: 1.2rem; font-weight: 600; color: #334155; margin-top: 0; }
-    .tagline { font-size: 1rem; color: #64748b; margin-bottom: 2rem; }
-    .disclaimer { font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+    /* Header Typography */
+    .main-title { font-size: 2.2rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem; }
+    .subtitle { font-size: 1rem; color: #94a3b8; margin-bottom: 2rem; }
     
-    /* Scheme Cards */
+    /* Complex Dark Mode Scheme Cards */
     .scheme-card {
-        background-color: #ffffff;
+        background-color: #1e293b; /* Slate 800 */
         padding: 24px;
-        border-radius: 8px;
-        border-left: 6px solid #f97316;
-        margin-bottom: 16px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border-top: 1px solid #e2e8f0;
-        border-right: 1px solid #e2e8f0;
-        border-bottom: 1px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #334155;
+        transition: transform 0.2s;
     }
-    .scheme-title { color: #0f172a; font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
-    .scheme-desc { color: #475569; font-size: 0.95rem; line-height: 1.5; }
+    .scheme-card:hover { border-color: #475569; }
+    
+    /* Badges row */
+    .badge-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; }
+    .badge-status { background-color: rgba(16, 185, 129, 0.1); color: #34d399; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-pillar { background-color: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    /* Content */
+    .scheme-title { color: #f8fafc; font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; }
+    .scheme-desc { color: #cbd5e1; font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px; }
+    .scheme-benefit { color: #94a3b8; font-size: 0.9rem; padding-left: 12px; border-left: 3px solid #3b82f6; margin-bottom: 16px; }
+    
+    /* Footer row with Relevance Score */
+    .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #334155; padding-top: 16px; }
+    .relevance { font-size: 0.85rem; color: #94a3b8; font-weight: 500; }
+    .score-num { color: #f8fafc; font-weight: 700; font-size: 1rem; }
+    .details-btn { color: #38bdf8; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. The Professional Site Copy (Found in your inspect)
-site_text = {
-    "title": "Yojana Setu",
-    "subtitle": "Government Scheme Finder & Application Guide",
-    "tagline": "Discover what you qualify for in under 2 minutes — with zero identity compromise.",
-    "privacyBadge": "Your answers stay on this device",
-    "disclaimer": "Independent public service tool. Not an official Government of India website. Always verify details on official portals."
-}
-
-# 4. The Database
+# 3. The Upgraded Database (Mimicking the real site's data structure)
 schemes_db = [
-    {"id": 1, "title": "PM Kisan Samman Nidhi", "occupation": "farmer", "description": "Provides ₹6,000 per year to farmer families. Ensures direct benefit transfer to bank accounts."},
-    {"id": 2, "title": "Post Matric Scholarship", "occupation": "student", "description": "Financial assistance for students pursuing higher education. Covers tuition and maintenance allowance."},
-    {"id": 3, "title": "Mudra Yojana", "occupation": "business", "description": "Loans up to ₹10 Lakhs for small enterprises. No collateral required for micro-businesses."},
-    {"id": 4, "title": "National Agricultural Market", "occupation": "farmer", "description": "Pan-India electronic trading portal networking existing APMC mandis."}
+    {
+        "id": 1, 
+        "title": "Post-Matric Scholarship for SC Students", 
+        "occupation": "student",
+        "pillar": "LIBERTY",
+        "status": "Possibly Eligible",
+        "score": "73",
+        "description": "Financial assistance to Scheduled Caste students studying at post-matriculation or post-secondary stage.",
+        "benefit": "100% compulsory non-refundable college fees reimbursement plus monthly maintenance allowance directly credited via DBT."
+    },
+    {
+        "id": 2, 
+        "title": "Atal Pension Yojana (APY)", 
+        "occupation": "all",
+        "pillar": "FRATERNITY",
+        "status": "Possibly Eligible",
+        "score": "60",
+        "description": "Government-backed guaranteed pension scheme for unorganised sector workers between 18 and 40 years.",
+        "benefit": "Guaranteed minimum monthly pension of ₹1,000, ₹2,000, ₹3,000, ₹4,000 or ₹5,000 from age 60 until lifetime."
+    }
 ]
 
-# 5. Build the UI Header
-st.markdown(f'<div class="privacy-badge">🔒 {site_text["privacyBadge"]}</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="main-title">{site_text["title"]}</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="subtitle">{site_text["subtitle"]}</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="tagline">{site_text["tagline"]}</div>', unsafe_allow_html=True)
+# 4. Layout using Streamlit Columns (To mimic the sidebar structure)
+col1, col2 = st.columns([1, 2.5])
 
-# 6. The Questionnaire 
-user_occupation = st.selectbox("What is your occupation?", ["Show All", "Farmer", "Student", "Business"])
+with col1:
+    st.markdown('<div class="main-title">Yojana Setu</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Government Scheme Finder & Application Guide<br>Discover what you qualify for in under 2 minutes.</div>', unsafe_allow_html=True)
+    st.write("---")
+    user_occupation = st.selectbox("Your Occupation:", ["all", "student", "business", "farmer"])
+    st.info("💡 Answer more questions to unlock targeted schemes.")
 
-st.write("---")
-st.subheader("Eligible Schemes")
+with col2:
+    # 5. The Matchmaker Engine
+    eligible_schemes = [
+        scheme for scheme in schemes_db 
+        if scheme["occupation"] == user_occupation.lower() or scheme["occupation"] == "all"
+    ]
 
-# 7. The Matchmaker Engine
-eligible_schemes = [
-    scheme for scheme in schemes_db 
-    if scheme["occupation"] == user_occupation.lower() or user_occupation == "Show All"
-]
+    st.markdown(f"<h3 style='color: #f8fafc; margin-bottom: 20px;'>{len(eligible_schemes)} Schemes Found</h3>", unsafe_allow_html=True)
 
-if not eligible_schemes:
-    st.info("No schemes found for this selection.")
-else:
+    # 6. Render the Complex Cards
     for scheme in eligible_schemes:
         st.markdown(f"""
         <div class="scheme-card">
+            <div class="badge-row">
+                <span class="badge-status">{scheme['status']}</span>
+                <span class="badge-pillar">{scheme['pillar']}</span>
+            </div>
             <div class="scheme-title">{scheme['title']}</div>
             <div class="scheme-desc">{scheme['description']}</div>
+            <div class="scheme-benefit"><b>Benefit:</b> {scheme['benefit']}</div>
+            <div class="card-footer">
+                <div class="relevance">Relevance: <span class="score-num">{scheme['score']}</span>/100</div>
+                <div class="details-btn">Details →</div>
+            </div>
         </div>
         """, unsafe_allow_html=True)
-
-# 8. The Footer
-st.markdown(f'<div class="disclaimer">{site_text["disclaimer"]}</div>', unsafe_allow_html=True)
